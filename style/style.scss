@@ -1,0 +1,777 @@
+/*
+* Theme: Sawyer
+* Author: FWPolice
+* Author URL: http://fwpolice.com
+*/
+
+/** Import **/
+@import "variables";
+@import url("http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700");
+@import 'https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,600';
+
+
+/** Basic Setup **/
+body, html {
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+html {
+    height: 100vh;
+}
+
+body {
+    background: $bodyColor;
+    color: $textColor;
+    font-family: $fontPrimary;
+    font-style: $fontStyle;
+    font-weight: $fontNormal;
+    font-size: $fontSize;
+    letter-spacing: $letterSpacing;
+    line-height: $lineHeight;
+    padding-left: $navSize;
+    @include font-smoothing(on);
+    height: 100vh;
+
+    @media screen and (max-width: $grid-md) {
+        padding-left: 0;
+        padding-top: 0.65*$navSize;
+    }
+}
+
+body, input, select, textarea {
+    @include bezier-transition(all, $animateFast, cubic-bezier(0.42, 0, 0.58, 1));
+}
+
+a {
+    @include bezier-transition(all, $animateFast, cubic-bezier(0.42, 0, 0.58, 1));
+    cursor: pointer;
+    color: $textColor;
+    text-decoration: none;
+    padding-bottom: 2px;
+    border-bottom: 1px solid $textColor;
+    font-weight: $fontBold;
+
+    &:hover {
+        color: $secondaryColor;
+        border-color: $secondaryColor;
+        text-decoration: none !important;
+        outline: none !important;
+    }
+
+    &:active, &:focus {
+        outline: none !important;
+        text-decoration: none !important;
+        //color: $secondaryColor;
+    }
+}
+
+button {
+    @include bezier-transition(all, $animateFast, cubic-bezier(0.42, 0, 0.58, 1));
+    cursor: pointer;
+
+    &:hover, &:active, &:focus {
+        outline: none !important;
+        text-decoration: none !important;
+        color: $primaryColor;
+    }
+}
+
+strong, b {
+    font-weight: $fontBold;
+}
+
+em, i {
+    font-style: italic;
+}
+
+p {
+    font-family: $fontPrimary;
+    font-size: $fontSize;
+    line-height: $lineHeight;
+    font-weight: $fontNormal;
+
+    &.text-intro {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: $fontHeader;
+    font-weight: $fontNormal;
+    line-height: 1;
+    margin: 0 0 1.5rem 0;
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    small {
+        color: inherit;
+    }
+
+    &.add-line {
+        position: relative;
+        padding-bottom: 1.5rem;
+
+        &:after {
+            display: block;
+            position: absolute;
+            content: " ";
+            bottom: .5rem;
+            height: 3px;
+            width: 75px;
+            background: $textColor;
+            @include opacity(0.75);
+        }
+
+        &.secondary-line:after {
+            background: $secondaryColor;
+        }
+
+        &.primary-line:after {
+            background: $primaryColor;
+        }
+    }
+}
+
+h1 {
+    font-size: 6rem;
+    font-weight: $fontNormal;
+}
+
+h2 {
+    font-size: 3.3rem;
+}
+
+h3 {
+    font-size: 2.5rem;
+}
+
+h4 {
+    font-size: 1.8rem;
+}
+
+h5 {
+    font-size: 1.6rem;
+}
+
+h6 {
+    font-size: 1.2rem;
+}
+
+sub {
+    font-size: 0.8em;
+    position: relative;
+    top: 0.5em;
+}
+
+sup {
+    font-size: 0.8em;
+    position: relative;
+    top: -0.5em;
+}
+
+small {
+    font-size: 85%;
+}
+
+figure {
+    display: block;
+    border: 1px solid $frameColor;
+    padding: 0.75rem 0.75rem 0;
+    text-align: center;
+    margin-bottom: 2rem;
+
+    img {
+        max-width: 100%;
+    }
+
+    figcaption {
+        display: block;
+        padding: 0.25rem 0.75rem;
+        font-size: 85%;
+        font-style: italic;
+        color: lighten($textColor, 10%);
+    }
+}
+
+.clear {
+    clear: both;
+}
+
+.display-none {
+    display: none !important;
+}
+
+.no-margin-bottom {
+    margin-bottom: 0;
+}
+
+.bg-white {
+    background: white;
+}
+
+.bg-dark {
+    background: $bodyColorDark;
+}
+
+.bg-yellow {
+    background: $primaryColor;
+}
+
+.bg-secondary {
+    background: $secondaryColor;
+    color: white;
+}
+
+.color-light {
+    color: $textColorLight;
+}
+
+.angled-box {
+    @include angle-machine(3deg, right, 3deg, right);
+}
+
+.angled-box-top {
+    @include angle-machine(3deg, right, 0deg, right);
+}
+
+.angled-box-bottom {
+    @include angle-machine(0deg, right, 3deg, right);
+}
+
+/** Navigation **/
+nav {
+    position: fixed;
+    left: 0;
+    height: 100%;
+    width: $navSize;
+    background: white;
+    text-align: center;
+    z-index: 10;
+    @include flexbox-col(on);
+    @include box-shadow(0 1px 2px rgba(0,0,0,0.1));
+
+    .logo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: $navSize;
+        height: $navSize;
+        line-height: $navSize;
+        border: none;
+        color: $secondaryColor;
+        background: $primaryColor;
+
+        img {
+            width: 50%;
+        }
+
+        &:hover {
+            background: $bodyColor;
+        }
+    }
+
+    .contact {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: $navSize;
+        height: $navSize;
+        line-height: $navSize;
+        border: none;
+        color: $textColorLight;
+
+        i {
+            font-size: 1.4rem;
+        }
+
+        &:hover {
+            background: $bodyColor;
+            color: $textColor;
+        }
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+
+        li {
+            display: block;
+            list-style-type: none;
+
+            a {
+                display: block;
+                height: $navSize;
+                line-height: $navSize;
+                padding: 0;
+                border: none;
+                color: $textColorLight;
+
+                i {
+                    font-size: 1.4rem;
+                }
+
+                &:hover {
+                    background: $bodyColor;
+                    color: $textColor;
+                }
+            }
+
+            &.active a {
+                background: $bodyColor;
+                color: $secondaryColor;
+            }
+        }
+    }
+
+    @media screen and (max-width: $grid-md) {
+        width: 100%;
+        height: $navSizeMobile;
+        top: 0;
+
+        .logo, .contact {
+            width: $navSizeMobile;
+            height: $navSizeMobile;
+            line-height: $navSizeMobile;
+            padding: 0;
+            left: 0;
+
+            i {
+                font-size: 1.1rem;
+            }
+        }
+
+        .contact {
+            left: auto;
+            right: 0;
+        }
+
+        ul {
+            padding-left: $navSizeMobile;
+            padding-right: $navSizeMobile;
+
+            li {
+                width: $navSizeMobile;
+                height: $navSizeMobile;
+                display: inline-block;
+
+                a {
+                    height: $navSizeMobile;
+                    line-height: $navSizeMobile;
+
+                    i {
+                        font-size: 1.1rem;
+                    }
+                }
+            }
+        }
+    }
+}
+
+/** Header **/
+header {
+    position: relative;
+    height: calc(100vh - 5.24078vw);
+    text-align: center;
+
+    #particles-js {
+        opacity: 0.7;
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        //background: rgba(34,49,63,0.05);
+        @include flexbox-col(on);
+    }
+
+    h2, p {
+        color: white;
+    }
+
+    p {
+        font-size: $fontSize;
+        max-width: 800px;
+        margin: 0 auto;
+        color: $textColor;
+    }
+
+    .bg-heading {
+        font-weight: $fontBold;
+
+        @media screen and (-webkit-min-device-pixel-ratio:0) {
+            background: #938F8C url('../images/hero/dance.jpeg') no-repeat center center;
+            background-size: cover;
+            background-attachment: fixed;
+            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text;
+        }
+
+        @media screen and (max-width: $grid-md) {
+            font-size: 50px;
+        }
+    }
+}
+
+
+/** Split **/
+section {
+    background: $bodyColor;
+    position: relative;
+    z-index: 1;
+
+    &.add-padding {
+        padding-top: 12rem;
+        padding-bottom: 12rem;
+
+        @media screen and (max-width: $grid-md) {
+            padding-top: 8rem;
+            padding-bottom: 8rem;
+        }
+    }
+
+    &.add-padding-sm {
+        padding-top: 9rem;
+        padding-bottom: 9rem;
+
+        @media screen and (max-width: $grid-md) {
+            padding-top: 5rem;
+            padding-bottom: 5rem;
+        }
+    }
+
+    &.split {
+        background: $bodyColor;
+        overflow: hidden;
+        height: 100vh;
+        @include flexbox-row(on);
+        padding: 0;
+
+        .content, .hero {
+            position: relative;
+            box-sizing: inherit!important;
+            @include flexbox-col(on);
+            height: 100%;
+            width: 50%;
+
+            &:before, &:after {
+                box-sizing: inherit!important;
+            }
+        }
+
+        .hero {
+            padding: 2%;
+            -webkit-justify-content: flex-end;
+            -ms-flex-pack: flex-end;
+            justify-content: flex-end;
+            background: url('../images/hero/design.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+
+            .overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(255,143,0,.15);
+            }
+        }
+
+        .content {
+            padding: 7rem 6rem;
+
+            &.content-top {
+                -webkit-justify-content: flex-start;
+                -ms-flex-pack: flex-start;
+                justify-content: flex-start;
+            }
+
+            &.content-bottom {
+                -webkit-justify-content: flex-end;
+                -ms-flex-pack: flex-end;
+                justify-content: flex-end;
+            }
+        }
+    }
+}
+
+
+#blog {
+    .blog-post {
+        display: block;
+        border: none;
+        background: white;
+        margin: 1rem 0;
+        overflow: hidden;
+        @include border-radius(4px);
+        @include box-shadow(0 1px 1px rgba(0, 0, 0, 0.1));
+        @include transition(transform 0.2s linear, box-shadow 0.2s linear);
+
+        figure {
+            display: block;
+            padding: 0;
+            margin: 0;
+            border: none;
+            height: 6*$lineHeight*$fontSize;
+            position: relative;
+            overflow: hidden;
+            background: $textColor;
+
+            img {
+                min-width: 100%;
+                min-height: 100%;
+                @include opacity(.9);
+            }
+        }
+
+        .content {
+            padding: 1.5rem 1rem 1rem;
+
+            h3 {
+                color: $textColor;
+                font-size: 1.3rem;
+                font-weight: $fontBold;
+                margin: 0 0 0.75rem;
+                display: -webkit-box;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                height: $lineHeight*$fontSize;
+                line-height: $lineHeight;
+                position: relative;
+                @include transition(color 0.1s linear);
+            }
+
+            .ellipsis {
+                font-size: 1.2rem;
+                color: $textColorLight;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                height: 2*$lineHeight*$fontSize;
+                position: relative;
+                margin: 0;
+            }
+        }
+
+        .meta {
+            padding: 0 1rem 1rem;
+            margin: 0;
+            text-align: right;
+            font-size: .9rem;
+            color: $textColorLight;
+
+            .date {
+                float: left;
+            }
+
+            i {
+                display: inline-block;
+                margin-right: 0.25rem;
+                color: $redAlert;
+            }
+        }
+
+        &:hover {
+            color: $textColor;
+            @include box-shadow(0 17px 25px rgba(0, 0, 0, 0.13));
+            @include transform(translateY(-4px)!important);
+            @include transition(transform 0.2s linear, box-shadow 0.2s linear);
+
+            .content {
+                h3 {
+                    color: $secondaryColor;
+                    @include transition(color 0.1s linear);
+                }
+            }
+        }
+    }
+
+    .loadmore {
+        text-align: center;
+        margin-top: 2rem;
+        font-size: 1.25rem;
+    }
+}
+
+
+#portfolio {
+    .photo {
+        position: relative;
+        height: 15rem;
+        margin: 1rem 0;
+        overflow: hidden;
+        background-size:cover;
+        overflow:hidden;
+        @include border-radius(7px);
+        @include box-shadow(0px 7px 20px rgba(0,0,0,.1));
+        @include transition(transform 0.2s linear, box-shadow 0.2s linear);
+
+        figure {
+            padding: 0;
+            margin: 0;
+            border: none;
+
+            image {
+                position: relative;
+                min-height: 100%;
+                min-width: 100%;
+            }
+        }
+
+        .overlay {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top:0;
+            z-index:10;
+
+            &:after {
+                content:'';
+                width: 100%;
+                height: 100%;
+                background-color: #202020;
+                position: absolute;
+                z-index: -10;
+                top: 0;
+                left: 0;
+                @include border-radius(7px);
+                @include opacity(0);
+                @include transition(all .3s ease);
+            }
+
+            .content {
+                text-align: center;
+                @include vertical-align();
+
+                h2 {
+                    position: relative;
+                    top: -15rem;
+                    color: white;
+                    text-align: center;
+                    font-size: 2rem;
+                    margin: 0 0 1rem;
+                    @include transition(all .3s cubic-bezier(.3, 0, 0, 1.3));
+                }
+
+                .btn {
+                    position: relative;
+                    bottom: -15rem;
+                    border-color: white;
+                    color: white;
+                    text-align: center;
+                    @include transition(all .3s cubic-bezier(.3, 0, 0, 1.3));
+
+                    &:hover {
+                        border-color: $primaryColor;
+                        background: $primaryColor;
+                        color: $textColor;
+                    }
+                }
+            }
+        }
+
+        &:hover {
+            color: $textColor;
+            @include box-shadow(0 17px 35px rgba(0, 0, 0, 0.2));
+            @include transform(translateY(-4px)!important);
+            @include transition(transform 0.2s linear, box-shadow 0.2s linear);
+
+            .overlay {
+                &:after {
+                    @include opacity(.75);
+                }
+
+                h2 {
+                    top: 0;
+                }
+
+                .btn {
+                    bottom: 0;
+                }
+            }
+        }
+    }
+
+
+  .case-study__title {
+    position: relative;
+    top:-200px;
+    margin-bottom:2rem;
+    margin-top:4rem;
+    font-size: 2.25rem;
+    font-family: 'Oswald';
+    font-weight: 100;
+    color:white;
+    text-align: center;
+    letter-spacing:5px;
+    transition:all .3s cubic-bezier(.3, 0, 0, 1.3);
+  }
+
+  .case-study__link {
+    position: relative;
+    display:block;
+    width:60%;
+    top:200px;
+    padding:10px;
+    margin: 0 auto;
+    font-family: 'Oswald';
+    color:white;
+    letter-spacing:3px;
+    text-decoration: none;
+    text-align: center;
+    border:2px solid white;
+    border-radius:3px;
+    font-size: 1.25em;
+    transition:all .3s cubic-bezier(.3, 0, 0, 1.3);
+    &:hover {
+      background-color: white;
+      color:#202020;
+    }
+  }
+
+
+.case-study:hover {
+
+  .case-study__title{
+    top:0;
+  }
+  .case-study__link{
+    top:0;
+  }
+
+  .case-study__overlay:after{
+    opacity:.75;
+  }
+}
+
+.study1{
+  background-image: url('http://www.livingfengshui.ca/wp-content/uploads/2014/01/unsplash-contemplative.jpg');
+}
+.study2 {
+  background-image: url('http://imgs.abduzeedo.com/files/paul0v2/unsplash/unsplash-04.jpg');
+}
+.study3{
+  background-image: url('http://415vince.com/wp-content/uploads/2014/07/unsplash-mts.jpg');
+}
+.study4{
+  background-image: url('http://41.media.tumblr.com/8d41610b4f5e7d5b68e4430b736fbeb3/tumblr_n4vbj2Vv8h1st5lhmo1_1280.jpg');
+}
+.study5{
+  background-image: url('http://publicdomainarchive.com/wp-content/uploads/2014/06/public-domain-images-free-stock-photos-high-quality-resolution-downloads-unsplash0067-1000x666.jpg');
+}
+.study6{
+  background-image: url('http://www.bedlammag.com/wp-content/uploads/2014/04/unsplash-love-yourself-article-e1397699812178.jpg');
+
+}
+}
